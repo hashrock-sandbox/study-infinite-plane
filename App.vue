@@ -10,10 +10,6 @@
     >
       <circle v-for="p in points" :cx="p.x" :cy="p.y" :key="p.id" r="10" />
     </svg>
-    <div>
-      <input type="range" v-model="viewport.x" />
-      <input type="range" v-model="viewport.y" />
-    </div>
   </div>
 </template>
 <script>
@@ -23,8 +19,8 @@ export default {
       return this.src.map(p => {
         return {
           ...p,
-          x: p.x - this.viewport.x,
-          y: p.y - this.viewport.y
+          x: p.x + this.viewport.x,
+          y: p.y + this.viewport.y
         };
       });
     }
@@ -32,14 +28,14 @@ export default {
   methods: {
     onPointerMove(ev) {
       if (this.grab) {
-        this.viewport.x = this.grab.x - ev.offsetX;
-        this.viewport.y = this.grab.y - ev.offsetY;
+        this.viewport.x = ev.offsetX - this.grab.x;
+        this.viewport.y = ev.offsetY - this.grab.y;
       }
     },
     onPointerDown(ev) {
       this.grab = {
-        x: ev.offsetX + this.viewport.x,
-        y: ev.offsetY + this.viewport.y
+        x: ev.offsetX - this.viewport.x,
+        y: ev.offsetY - this.viewport.y
       };
     },
     onPointerUp() {
