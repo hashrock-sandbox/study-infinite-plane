@@ -20,6 +20,7 @@
 </template>
 <script>
 import { example } from "./example.js";
+const zoomRatio = 1.5;
 
 export default {
   computed: {
@@ -41,24 +42,18 @@ export default {
       }
     },
     zoomIn() {
-      //中点を原点に移動
-      const zoomRatio = 1.05;
-
-      //
-
-      // const px = this.viewport.x + 150 / this.viewport.zoom;
-      // console.log(px);
-
-      // this.viewport.x -= this.viewport.x + 150 / this.viewport.zoom;
-      // this.viewport.y -= 150 / this.viewport.zoom;
-      // this.viewport.x *= zoomRatio;
-      // this.viewport.y *= zoomRatio;
-      // this.viewport.zoom *= zoomRatio;
-      // this.viewport.x += 150 * this.viewport.zoom;
-      // this.viewport.y += 150 * this.viewport.zoom;
+      this.viewport.x += 150 / this.viewport.zoom;
+      this.viewport.y += 150 / this.viewport.zoom;
+      this.viewport.zoom *= zoomRatio;
+      this.viewport.x -= 150 / this.viewport.zoom;
+      this.viewport.y -= 150 / this.viewport.zoom;
     },
     zoomOut() {
-      this.viewport.zoom /= 1.1;
+      this.viewport.x += 150 / this.viewport.zoom;
+      this.viewport.y += 150 / this.viewport.zoom;
+      this.viewport.zoom /= zoomRatio;
+      this.viewport.x -= 150 / this.viewport.zoom;
+      this.viewport.y -= 150 / this.viewport.zoom;
     },
     onPointerDown(ev) {
       this.$refs.canvas.setPointerCapture(ev.pointerId);
