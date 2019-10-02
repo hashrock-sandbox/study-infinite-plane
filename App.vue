@@ -15,9 +15,12 @@
       <button @click="zoomIn">+</button>
       <button @click="zoomOut">-</button>
     </div>
+    <div>{{viewport.x}} {{viewport.y}} {{viewport.zoom}}</div>
   </div>
 </template>
 <script>
+import { example } from "./example.js";
+
 export default {
   computed: {
     points() {
@@ -40,8 +43,11 @@ export default {
     zoomIn() {
       //中点を原点に移動
       const zoomRatio = 1.05;
-      const px = this.viewport.x + 150 / this.viewport.zoom;
-      console.log(px);
+
+      //
+
+      // const px = this.viewport.x + 150 / this.viewport.zoom;
+      // console.log(px);
 
       // this.viewport.x -= this.viewport.x + 150 / this.viewport.zoom;
       // this.viewport.y -= 150 / this.viewport.zoom;
@@ -70,24 +76,7 @@ export default {
   data() {
     return {
       grab: null,
-      src: [
-        {
-          id: 0,
-          x: 10,
-          y: 10
-        },
-        { id: 1, x: 20, y: 30 },
-        {
-          id: 2,
-          x: 50,
-          y: 30
-        },
-        {
-          id: 3,
-          x: 80,
-          y: 90
-        }
-      ],
+      src: example,
       viewport: {
         x: 0,
         y: 0,
