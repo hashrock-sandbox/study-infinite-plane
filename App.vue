@@ -10,12 +10,22 @@
       @pointerup="onPointerUp"
     >
       <circle v-for="p in points" :cx="p.x" :cy="p.y" :key="p.id" :r="10 * viewport.zoom" />
+
+      <line
+        v-if="grab"
+        stroke="black"
+        :x1="-viewport.x"
+        :y1="-viewport.y"
+        :x2="grab.x-viewport.x"
+        :y2="grab.y-viewport.y"
+      />
     </svg>
     <div>
       <button @click="zoomIn">+</button>
       <button @click="zoomOut">-</button>
     </div>
-    <div>{{viewport.x}} {{viewport.y}} {{viewport.zoom}}</div>
+    <div v-if="grab">grab::x {{grab.x}}, grab::y {{grab.y}}</div>
+    <div>x: {{viewport.x}} y: {{viewport.y}} zoom: {{viewport.zoom}}</div>
   </div>
 </template>
 <script>
