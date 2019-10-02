@@ -47,8 +47,8 @@ export default {
   methods: {
     onPointerMove(ev) {
       if (this.grab) {
-        this.viewport.x = -(ev.offsetX - this.grab.x) / this.viewport.zoom;
-        this.viewport.y = -(ev.offsetY - this.grab.y) / this.viewport.zoom;
+        this.viewport.x = (-ev.offsetX + this.grab.x) / this.viewport.zoom;
+        this.viewport.y = (-ev.offsetY + this.grab.y) / this.viewport.zoom;
       }
     },
     zoomIn() {
@@ -70,8 +70,8 @@ export default {
 
       //viewport矩形内のつかみ位置
       this.grab = {
-        x: this.viewport.x + ev.offsetX / this.viewport.zoom,
-        y: this.viewport.y + ev.offsetY / this.viewport.zoom
+        x: this.viewport.x + ev.offsetX,
+        y: this.viewport.y + ev.offsetY
       };
     },
     onPointerUp() {
