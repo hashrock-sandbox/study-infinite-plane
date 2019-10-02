@@ -12,7 +12,8 @@
       <circle v-for="p in points" :cx="p.x" :cy="p.y" :key="p.id" :r="10 * viewport.zoom" />
     </svg>
     <div>
-      <input type="range" v-model.number="viewport.zoom" min="0.1" max="2" step="0.05" />
+      <button @click="zoomIn">+</button>
+      <button @click="zoomOut">-</button>
     </div>
   </div>
 </template>
@@ -23,8 +24,8 @@ export default {
       return this.src.map(p => {
         return {
           ...p,
-          x: (p.x + this.viewport.x) * this.viewport.zoom,
-          y: (p.y + this.viewport.y) * this.viewport.zoom
+          x: (p.x - this.viewport.x) * this.viewport.zoom,
+          y: (p.y - this.viewport.y) * this.viewport.zoom
         };
       });
     }
@@ -32,16 +33,34 @@ export default {
   methods: {
     onPointerMove(ev) {
       if (this.grab) {
-        this.viewport.x = ev.offsetX / this.viewport.zoom - this.grab.x;
-        this.viewport.y = ev.offsetY / this.viewport.zoom - this.grab.y;
+        this.viewport.x = -(ev.offsetX - this.grab.x) / this.viewport.zoom;
+        this.viewport.y = -(ev.offsetY - this.grab.y) / this.viewport.zoom;
       }
+    },
+    zoomIn() {
+      //中点を原点に移動
+      const zoomRatio = 1.05;
+      const px = this.viewport.x + 150 / this.viewport.zoom;
+      console.log(px);
+
+      // this.viewport.x -= this.viewport.x + 150 / this.viewport.zoom;
+      // this.viewport.y -= 150 / this.viewport.zoom;
+      // this.viewport.x *= zoomRatio;
+      // this.viewport.y *= zoomRatio;
+      // this.viewport.zoom *= zoomRatio;
+      // this.viewport.x += 150 * this.viewport.zoom;
+      // this.viewport.y += 150 * this.viewport.zoom;
+    },
+    zoomOut() {
+      this.viewport.zoom /= 1.1;
     },
     onPointerDown(ev) {
       this.$refs.canvas.setPointerCapture(ev.pointerId);
 
+      //viewport矩形内のつかみ位置
       this.grab = {
-        x: ev.offsetX / this.viewport.zoom - this.viewport.x,
-        y: ev.offsetY / this.viewport.zoom - this.viewport.y
+        x: this.viewport.x + ev.offsetX / this.viewport.zoom,
+        y: this.viewport.y + ev.offsetY / this.viewport.zoom
       };
     },
     onPointerUp() {
